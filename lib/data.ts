@@ -245,35 +245,3 @@ export async function getKeywordResult(keyword: string, options: { allowApi: boo
     fetchedAt: row.relations_fetched_at,
   };
 }
-
-export async function logSearch(keyword: string) {
-  const row = await ensureKeyword(keyword);
-  await query(
-    `INSERT INTO search_events (keyword_id)
-     SELECT $1
-     WHERE NOT EXISTS (
-       SELECT 1
-       FROM search_events
-       WHERE keyword_id = $1
-         AND searched_at >= NOW() - INTERVAL '3 seconds'
-     )`,
-    [row.id],
-  );
-}
-
-export async function getPopularKeywords(limit = 12) {
-  try {
-    return await query<{ display_keyword: string; searches: string }>(
-      `SELECT k.display_keyword, COUNT(*)::text AS searches
-       FROM search_events s
-       JOIN keywords k ON k.id = s.keyword_id
-       WHERE s.searched_at >= NOW() - INTERVAL '7 days'
-       GROUP BY k.id, k.display_keyword
-       ORDER BY COUNT(*) DESC, MAX(s.searched_at) DESC
-       LIMIT $1`,
-      [limit],
-    );
-  } catch {
-    return [];
-  }
-}
