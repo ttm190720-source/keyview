@@ -41,7 +41,13 @@ export default function RelatedTable({ items }: { items: RelatedKeyword[] }) {
           <span>키워드</span><span>PC</span><span>모바일</span><span>월 검색량</span>
         </div>
         {rows.map((item) => (
-          <Link className="keywordRow" role="row" href={`/k/${encodeURIComponent(item.keyword)}`} key={item.keyword}>
+          <Link
+            className="keywordRow"
+            role="row"
+            href={`/k/${encodeURIComponent(item.keyword)}`}
+            key={item.keyword}
+            prefetch={false}
+          >
             <strong>{item.keyword}</strong>
             <span>{displayCount(item.pc, item.pcLow)}</span>
             <span>{displayCount(item.mobile, item.mobileLow)}</span>
