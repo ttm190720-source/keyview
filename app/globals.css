@@ -69,6 +69,44 @@ button, input { font: inherit; }
 .emptyResult p, .dataNote { color: var(--muted); font-size: 13px; line-height: 1.6; }
 .dataNote { margin-top: 22px; }
 .siteFooter { border-top: 1px solid var(--line); padding: 28px 0 40px; color: #979ca5; font-size: 12px; }
+
+/* Realtime trend discovery */
+.trendTicker { width: min(720px, 100%); margin: 22px auto 0; display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 14px; min-height: 52px; padding: 8px 12px 8px 14px; border: 1px solid #e7e9ee; background: #fafbfc; border-radius: 16px; text-align: left; }
+.trendTickerLabel { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 13px; color: #4f5560; }
+.trendTickerLabel strong { font-weight: 700; }
+.trendTickerAll { display: none; color: var(--accent); font-size: 11px; font-weight: 650; }
+.trendTickerLabel:hover .trendTickerAll { display: inline; }
+.trendTickerWindow { min-width: 0; overflow: hidden; }
+.trendTickerKeyword { min-width: 0; display: grid; grid-template-columns: 28px minmax(0,1fr) auto; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 11px; background: #fff; border: 1px solid #eef0f3; animation: trendTickerIn .28s ease; }
+.trendTickerKeyword:hover { border-color: #cfd3ff; background: #f8f8ff; }
+.trendTickerRank { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: #f0f1f4; font-size: 11px; font-weight: 700; color: #565c67; }
+.trendTickerKeyword strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 650; }
+.trendTickerGo { color: var(--accent); font-size: 11px; font-weight: 650; white-space: nowrap; }
+.trendTickerMeta { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; white-space: nowrap; color: #9a9fa8; font-size: 10px; }
+@keyframes trendTickerIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.trendPage { padding: 42px 0 80px; }
+.trendSearch { margin-bottom: 48px; }
+.trendPageHeader { max-width: 760px; margin-bottom: 30px; }
+.trendPageHeader h1 { margin: 10px 0 14px; font-size: clamp(38px, 6vw, 56px); letter-spacing: -0.05em; }
+.trendPageHeader > p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
+.trendMeta { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 17px; color: #969ba5; font-size: 12px; }
+.trendListCard { border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: #fff; }
+.trendListRow { display: grid; grid-template-columns: 48px minmax(0,1fr) auto; align-items: center; gap: 14px; min-height: 66px; padding: 0 20px; border-bottom: 1px solid #eef0f3; }
+.trendListRow:last-child { border-bottom: 0; }
+.trendListRow:hover { background: #f8f8ff; }
+.trendRank { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #f0f1f4; font-size: 13px; font-weight: 700; }
+.trendListRow strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; font-weight: 650; }
+.trendAnalyze { color: var(--accent); font-size: 13px; font-weight: 650; }
+.trendSourceNote { margin: 20px 2px 0; color: #979ca5; font-size: 12px; line-height: 1.65; }
+
+@media (prefers-reduced-motion: reduce) {
+  .trendTickerKeyword { animation: none; }
+}
+
 @media (max-width: 720px) {
   .shell { width: min(calc(100% - 28px), var(--max)); }
   .home { padding-top: 50px; }
@@ -90,40 +128,13 @@ button, input { font: inherit; }
   .keywordRow { grid-template-columns: minmax(150px,1.8fr) 1fr; padding: 0 10px; }
   .keywordRow span:nth-child(2), .keywordRow span:nth-child(3) { display: none; }
   .keywordRow.header span:nth-child(4) { display:block; }
-}
 
-
-/* Realtime trend discovery */
-.trendQuick { width: min(780px, 100%); margin: 24px auto 0; }
-.trendQuickTitle { display: flex; align-items: center; justify-content: center; gap: 7px; color: #4f5560; font-size: 14px; }
-.trendQuickTitle strong { font-weight: 700; }
-.trendQuickTitle small { color: #a0a5af; font-size: 11px; margin-left: 3px; }
-.trendChips { margin-top: 12px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.trendChips a { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid #e7e9ee; background: #f6f7f9; border-radius: 999px; padding: 9px 13px; color: #565c67; font-size: 13px; transition: .15s ease; }
-.trendChips a:hover { background: #f1f2ff; border-color: #cfd3ff; color: var(--accent); transform: translateY(-1px); }
-.trendChips .trendMore { background: #fff; border-color: #d7daf8; color: var(--accent); font-weight: 650; }
-.trendPage { padding: 42px 0 80px; }
-.trendSearch { margin-bottom: 48px; }
-.trendPageHeader { max-width: 760px; margin-bottom: 30px; }
-.trendPageHeader h1 { margin: 10px 0 14px; font-size: clamp(38px, 6vw, 56px); letter-spacing: -0.05em; }
-.trendPageHeader > p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
-.trendMeta { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 17px; color: #969ba5; font-size: 12px; }
-.trendListCard { border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: #fff; }
-.trendListRow { display: grid; grid-template-columns: 48px minmax(0,1fr) auto; align-items: center; gap: 14px; min-height: 66px; padding: 0 20px; border-bottom: 1px solid #eef0f3; }
-.trendListRow:last-child { border-bottom: 0; }
-.trendListRow:hover { background: #f8f8ff; }
-.trendRank { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #f0f1f4; font-size: 13px; font-weight: 700; }
-.trendListRow strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; font-weight: 650; }
-.trendAnalyze { color: var(--accent); font-size: 13px; font-weight: 650; }
-.trendSourceNote { margin: 20px 2px 0; color: #979ca5; font-size: 12px; line-height: 1.65; }
-
-@media (max-width: 720px) {
-  .trendQuick { margin-top: 20px; overflow: hidden; }
-  .trendQuickTitle { justify-content: flex-start; padding-left: 2px; }
-  .trendQuickTitle small { display: none; }
-  .trendChips { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding: 1px 1px 7px; scrollbar-width: none; }
-  .trendChips::-webkit-scrollbar { display: none; }
-  .trendChips a { flex: 0 0 auto; max-width: 180px; }
+  .trendTicker { grid-template-columns: 1fr auto; gap: 8px; padding: 10px; }
+  .trendTickerLabel { grid-column: 1 / -1; justify-content: space-between; }
+  .trendTickerLabel .trendTickerAll { display: inline; margin-left: auto; }
+  .trendTickerKeyword { grid-template-columns: 26px minmax(0,1fr); }
+  .trendTickerGo { display: none; }
+  .trendTickerMeta span:last-child { display: none; }
   .trendPage { padding-top: 28px; }
   .trendSearch { margin-bottom: 38px; }
   .trendPageHeader > p { font-size: 14px; }
