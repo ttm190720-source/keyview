@@ -26,7 +26,11 @@ export default async function Home() {
         {popular.length ? (
           <div className="chips">
             {popular.map((item) => (
-              <Link href={`/k/${encodeURIComponent(item.display_keyword)}`} key={item.display_keyword}>
+              <Link
+                href={`/k/${encodeURIComponent(item.display_keyword)}`}
+                key={item.display_keyword}
+                prefetch={false}
+              >
                 {item.display_keyword}
               </Link>
             ))}
