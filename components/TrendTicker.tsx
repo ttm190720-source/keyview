@@ -42,7 +42,7 @@ export default function TrendTicker({
     >
       <Link className="trendTickerLabel" href="/trend" prefetch={false}>
         <span aria-hidden="true">🔥</span>
-        <strong>인기 급상승 키워드</strong>
+        <strong>지금 뜨는 검색어</strong>
         <span className="trendTickerAll">전체보기 →</span>
       </Link>
 
