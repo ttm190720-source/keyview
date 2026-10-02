@@ -1,12 +1,8 @@
-import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
-import { getPopularKeywords } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const popular = await getPopularKeywords();
-
   return (
     <div className="shell home">
       <section className="hero">
@@ -17,27 +13,6 @@ export default async function Home() {
         <div className="promiseRow">
           <span>무료</span><span>회원가입 없음</span><span>캐시 우선 조회</span>
         </div>
-      </section>
-
-      <section className="popularCard">
-        <div className="sectionHeading simple">
-          <div><h2>최근 많이 찾은 키워드</h2><p>키뷰 안에서 최근 7일간 많이 탐색된 검색어입니다.</p></div>
-        </div>
-        {popular.length ? (
-          <div className="chips">
-            {popular.map((item) => (
-              <Link
-                href={`/k/${encodeURIComponent(item.display_keyword)}`}
-                key={item.display_keyword}
-                prefetch={false}
-              >
-                {item.display_keyword}
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <p className="empty">아직 검색 기록이 없습니다. 첫 키워드를 검색해보세요.</p>
-        )}
       </section>
 
       <section className="how">
