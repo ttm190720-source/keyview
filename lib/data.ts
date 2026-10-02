@@ -248,7 +248,17 @@ export async function getKeywordResult(keyword: string, options: { allowApi: boo
 
 export async function logSearch(keyword: string) {
   const row = await ensureKeyword(keyword);
-  await query(`INSERT INTO search_events (keyword_id) VALUES ($1)`, [row.id]);
+  await query(
+    `INSERT INTO search_events (keyword_id)
+     SELECT $1
+     WHERE NOT EXISTS (
+       SELECT 1
+       FROM search_events
+       WHERE keyword_id = $1
+         AND searched_at >= NOW() - INTERVAL '3 seconds'
+     )`,
+    [row.id],
+  );
 }
 
 export async function getPopularKeywords(limit = 12) {
