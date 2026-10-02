@@ -22,3 +22,14 @@ export function isKnownBot(userAgent: string) {
     userAgent,
   );
 }
+
+export function isPrefetchRequest(headers: Headers) {
+  const purpose = headers.get("purpose") || "";
+  const secPurpose = headers.get("sec-purpose") || "";
+  return (
+    headers.get("next-router-prefetch") === "1" ||
+    headers.get("x-middleware-prefetch") === "1" ||
+    /prefetch/i.test(purpose) ||
+    /prefetch/i.test(secPurpose)
+  );
+}
