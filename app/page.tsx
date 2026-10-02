@@ -1,11 +1,11 @@
-import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
+import TrendTicker from "@/components/TrendTicker";
 import { formatTrendUpdatedAt, getTrendingKeywords } from "@/lib/trends";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const trend = await getTrendingKeywords(5);
+  const trend = await getTrendingKeywords(10);
   const updatedAt = formatTrendUpdatedAt(trend.updatedAt);
 
   return (
@@ -16,29 +16,7 @@ export default async function Home() {
         <p>네이버 월간 검색량과 관련 키워드를 검색량 순으로 보고, 클릭하면서 계속 탐색할 수 있습니다.</p>
         <SearchBox />
 
-        {trend.items.length > 0 && (
-          <div className="trendQuick">
-            <div className="trendQuickTitle">
-              <span aria-hidden="true">🔥</span>
-              <strong>인기 급상승 키워드</strong>
-              {updatedAt && <small>{updatedAt} 기준</small>}
-            </div>
-            <div className="trendChips">
-              {trend.items.map((item) => (
-                <Link
-                  href={`/k/${encodeURIComponent(item.keyword)}`}
-                  key={item.keyword}
-                  prefetch={false}
-                >
-                  #{item.keyword}
-                </Link>
-              ))}
-              <Link className="trendMore" href="/trend" prefetch={false}>
-                더보기 <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </div>
-        )}
+        <TrendTicker items={trend.items} updatedAt={updatedAt} />
 
         <div className="promiseRow">
           <span>무료</span><span>회원가입 없음</span><span>캐시 우선 조회</span>
