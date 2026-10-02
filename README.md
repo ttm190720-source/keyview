@@ -32,4 +32,8 @@
 - `search_events`: 키뷰 내부 인기 키워드 계산용 조회 로그
 - `api_call_events`: 외부 API 호출량 보호 및 상태 기록
 
+## 배포
+
+Railway의 `keyview` 서비스는 GitHub `main` 브랜치 변경을 감시합니다.
+
 공고픽 저장소/DB/환경변수와 공유하지 않습니다.
