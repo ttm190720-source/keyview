@@ -3,7 +3,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import SearchBox from "@/components/SearchBox";
 import RelatedTable from "@/components/RelatedTable";
-import { getKeywordResult, logSearch } from "@/lib/data";
+import { getKeywordResult } from "@/lib/data";
 import { displayCount, isKnownBot, isPrefetchRequest, totalCount } from "@/lib/keyword";
 
 type Props = { params: Promise<{ keyword: string }> };
@@ -27,7 +27,6 @@ export default async function KeywordPage({ params }: Props) {
   const prefetch = isPrefetchRequest(headerList);
   const realVisit = !bot && !prefetch;
 
-  if (realVisit) await logSearch(decoded);
   const result = await getKeywordResult(decoded, { allowApi: realVisit });
   const total = totalCount(result.pc, result.mobile);
   const isStale = result.cacheState === "stale" || result.cacheState === "cache-only";
