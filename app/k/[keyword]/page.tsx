@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import SearchBox from "@/components/SearchBox";
 import RelatedTable from "@/components/RelatedTable";
 import { getKeywordResult, logSearch } from "@/lib/data";
-import { displayCount, isKnownBot, totalCount } from "@/lib/keyword";
+import { displayCount, isKnownBot, isPrefetchRequest, totalCount } from "@/lib/keyword";
 
 type Props = { params: Promise<{ keyword: string }> };
 
@@ -24,9 +24,11 @@ export default async function KeywordPage({ params }: Props) {
   const decoded = decodeURIComponent(keyword).trim();
   const headerList = await headers();
   const bot = isKnownBot(headerList.get("user-agent") || "");
+  const prefetch = isPrefetchRequest(headerList);
+  const realVisit = !bot && !prefetch;
 
-  if (!bot) await logSearch(decoded);
-  const result = await getKeywordResult(decoded, { allowApi: !bot });
+  if (realVisit) await logSearch(decoded);
+  const result = await getKeywordResult(decoded, { allowApi: realVisit });
   const total = totalCount(result.pc, result.mobile);
   const isStale = result.cacheState === "stale" || result.cacheState === "cache-only";
 
@@ -34,7 +36,7 @@ export default async function KeywordPage({ params }: Props) {
     <div className="shell resultPage">
       <div className="resultSearch"><SearchBox initial={decoded} compact /></div>
 
-      <nav className="crumbs"><Link href="/">홈</Link><span>›</span><strong>{decoded}</strong></nav>
+      <nav className="crumbs"><Link href="/" prefetch={false}>홈</Link><span>›</span><strong>{decoded}</strong></nav>
 
       <section className="keywordHero">
         <div>
@@ -56,7 +58,7 @@ export default async function KeywordPage({ params }: Props) {
       ) : (
         <section className="emptyResult">
           <h2>관련 키워드 데이터가 아직 없습니다.</h2>
-          <p>{bot ? "검색엔진 요청에서는 외부 API를 호출하지 않습니다." : "네이버 키워드 도구 응답이 지연되었거나 일시적으로 사용할 수 없습니다."}</p>
+          <p>{!realVisit ? "자동 미리보기 요청에서는 외부 API를 호출하지 않습니다." : "네이버 키워드 도구 응답이 지연되었거나 일시적으로 사용할 수 없습니다."}</p>
         </section>
       )}
 
