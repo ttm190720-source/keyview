@@ -32,9 +32,14 @@ export async function ensureSchema() {
           mobile_low BOOLEAN NOT NULL DEFAULT FALSE,
           volume_fetched_at TIMESTAMPTZ,
           relations_fetched_at TIMESTAMPTZ,
+          trend_data JSONB,
+          trend_fetched_at TIMESTAMPTZ,
           created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
           updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
+
+        ALTER TABLE keywords ADD COLUMN IF NOT EXISTS trend_data JSONB;
+        ALTER TABLE keywords ADD COLUMN IF NOT EXISTS trend_fetched_at TIMESTAMPTZ;
 
         CREATE TABLE IF NOT EXISTS keyword_relations (
           parent_keyword_id BIGINT NOT NULL REFERENCES keywords(id) ON DELETE CASCADE,
@@ -55,6 +60,12 @@ export async function ensureSchema() {
           normalized_keyword TEXT NOT NULL,
           status TEXT NOT NULL,
           requested_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        );
+
+        CREATE TABLE IF NOT EXISTS trend_api_daily_usage (
+          usage_day DATE PRIMARY KEY,
+          call_count INTEGER NOT NULL DEFAULT 0,
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
 
         CREATE INDEX IF NOT EXISTS idx_keyword_relations_parent_rank
