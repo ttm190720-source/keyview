@@ -141,3 +141,36 @@ button, input { font: inherit; }
   .trendListRow { grid-template-columns: 40px minmax(0,1fr); min-height: 62px; padding: 0 14px; gap: 10px; }
   .trendAnalyze { display: none; }
 }
+
+
+/* Search trend chart */
+.searchTrendSection { margin: 0 0 52px; padding: 28px; border: 1px solid var(--line); border-radius: 22px; background: #fff; }
+.trendCacheBadge { flex: 0 0 auto; border: 1px solid #e7e9ee; background: #fafbfc; border-radius: 999px; padding: 7px 10px; color: #858b95; font-size: 11px; }
+.searchTrendStats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 18px 0 14px; }
+.searchTrendStats article { padding: 15px 17px; border-radius: 14px; background: var(--soft); }
+.searchTrendStats span { display: block; margin-bottom: 7px; color: var(--muted); font-size: 12px; }
+.searchTrendStats strong { font-size: 17px; font-weight: 650; }
+.searchTrendChart { border: 1px solid #eef0f3; border-radius: 16px; background: #fcfcfd; padding: 14px 14px 8px; overflow: hidden; }
+.searchTrendActive { display: flex; align-items: baseline; gap: 6px; min-height: 34px; padding: 0 6px 4px; }
+.searchTrendActive span { color: var(--muted); font-size: 12px; }
+.searchTrendActive strong { margin-left: auto; font-size: 23px; letter-spacing: -0.04em; }
+.searchTrendActive small { color: #9aa0aa; font-size: 11px; }
+.searchTrendChart svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: manipulation; }
+.trendGridLine { stroke: #eceef2; stroke-width: 1; }
+.trendGridLabel, .trendAxisLabel { fill: #a0a5ae; font-size: 10px; }
+.trendLine { stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.trendPoint { fill: #fff; stroke: var(--accent); stroke-width: 2; transition: r .12s ease; }
+.trendPoint.active { fill: var(--accent); }
+.trendHitArea { fill: transparent; cursor: pointer; }
+.searchTrendNote { margin: 12px 2px 0; color: #9298a2; font-size: 11px; line-height: 1.6; }
+
+@media (max-width: 720px) {
+  .searchTrendSection { margin-bottom: 38px; padding: 20px 14px; border-radius: 18px; }
+  .searchTrendSection .sectionHeading { gap: 8px; margin-bottom: 14px; }
+  .trendCacheBadge { align-self: flex-start; }
+  .searchTrendStats { grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .searchTrendStats article { padding: 13px; }
+  .searchTrendStats strong { font-size: 14px; }
+  .searchTrendChart { padding: 12px 8px 6px; border-radius: 14px; }
+  .searchTrendActive strong { font-size: 20px; }
+}
