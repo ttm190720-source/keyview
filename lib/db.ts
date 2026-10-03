@@ -34,12 +34,14 @@ export async function ensureSchema() {
           relations_fetched_at TIMESTAMPTZ,
           trend_data JSONB,
           trend_fetched_at TIMESTAMPTZ,
+          trend_basis_volume BIGINT,
           created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
           updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
 
         ALTER TABLE keywords ADD COLUMN IF NOT EXISTS trend_data JSONB;
         ALTER TABLE keywords ADD COLUMN IF NOT EXISTS trend_fetched_at TIMESTAMPTZ;
+        ALTER TABLE keywords ADD COLUMN IF NOT EXISTS trend_basis_volume BIGINT;
 
         CREATE TABLE IF NOT EXISTS keyword_relations (
           parent_keyword_id BIGINT NOT NULL REFERENCES keywords(id) ON DELETE CASCADE,
