@@ -35,6 +35,11 @@ export async function ensureSchema() {
           trend_data JSONB,
           trend_fetched_at TIMESTAMPTZ,
           trend_basis_volume BIGINT,
+          blog_total BIGINT,
+          blog_posts_per_day NUMERIC(12,4),
+          blog_sample_days INTEGER,
+          blog_sample_size INTEGER,
+          blog_fetched_at TIMESTAMPTZ,
           created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
           updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
@@ -42,6 +47,11 @@ export async function ensureSchema() {
         ALTER TABLE keywords ADD COLUMN IF NOT EXISTS trend_data JSONB;
         ALTER TABLE keywords ADD COLUMN IF NOT EXISTS trend_fetched_at TIMESTAMPTZ;
         ALTER TABLE keywords ADD COLUMN IF NOT EXISTS trend_basis_volume BIGINT;
+        ALTER TABLE keywords ADD COLUMN IF NOT EXISTS blog_total BIGINT;
+        ALTER TABLE keywords ADD COLUMN IF NOT EXISTS blog_posts_per_day NUMERIC(12,4);
+        ALTER TABLE keywords ADD COLUMN IF NOT EXISTS blog_sample_days INTEGER;
+        ALTER TABLE keywords ADD COLUMN IF NOT EXISTS blog_sample_size INTEGER;
+        ALTER TABLE keywords ADD COLUMN IF NOT EXISTS blog_fetched_at TIMESTAMPTZ;
 
         CREATE TABLE IF NOT EXISTS keyword_relations (
           parent_keyword_id BIGINT NOT NULL REFERENCES keywords(id) ON DELETE CASCADE,
@@ -69,6 +79,36 @@ export async function ensureSchema() {
           call_count INTEGER NOT NULL DEFAULT 0,
           updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
+
+        CREATE TABLE IF NOT EXISTS blog_api_daily_usage (
+          usage_day DATE PRIMARY KEY,
+          call_count INTEGER NOT NULL DEFAULT 0,
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        );
+
+        CREATE TABLE IF NOT EXISTS shopping_api_daily_usage (
+          usage_day DATE PRIMARY KEY,
+          call_count INTEGER NOT NULL DEFAULT 0,
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        );
+
+        CREATE TABLE IF NOT EXISTS shopping_insights (
+          id BIGSERIAL PRIMARY KEY,
+          keyword_id BIGINT NOT NULL REFERENCES keywords(id) ON DELETE CASCADE,
+          category_code TEXT NOT NULL,
+          category_name TEXT NOT NULL,
+          trend_data JSONB,
+          device_data JSONB,
+          age_data JSONB,
+          fetched_at TIMESTAMPTZ,
+          created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          UNIQUE(keyword_id, category_code)
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_shopping_insights_keyword_category
+          ON shopping_insights(keyword_id, category_code);
+        CREATE INDEX IF NOT EXISTS idx_shopping_insights_fetched_at
+          ON shopping_insights(fetched_at DESC);
 
         CREATE INDEX IF NOT EXISTS idx_keyword_relations_parent_rank
           ON keyword_relations(parent_keyword_id, rank);
