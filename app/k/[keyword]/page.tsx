@@ -4,8 +4,10 @@ import { headers } from "next/headers";
 import SearchBox from "@/components/SearchBox";
 import RelatedTable from "@/components/RelatedTable";
 import SearchTrendChart from "@/components/SearchTrendChart";
+import AnalysisCards from "@/components/AnalysisCards";
 import { getKeywordResult } from "@/lib/data";
 import { getSearchTrend } from "@/lib/searchTrend";
+import { getBlogInsight } from "@/lib/blogInsight";
 import { displayCount, isKnownBot, isPrefetchRequest, totalCount } from "@/lib/keyword";
 
 type Props = { params: Promise<{ keyword: string }> };
@@ -80,10 +82,13 @@ export default async function KeywordPage({ params }: Props) {
 
   const result = await getKeywordResult(decoded, { allowApi: realVisit });
   const total = totalCount(result.pc, result.mobile);
-  const searchTrend = await getSearchTrend(decoded, {
-    allowApi: realVisit,
-    monthlySearchVolume: total,
-  });
+  const [searchTrend, blogInsight] = await Promise.all([
+    getSearchTrend(decoded, {
+      allowApi: realVisit,
+      monthlySearchVolume: total,
+    }),
+    getBlogInsight(decoded, { allowApi: realVisit }),
+  ]);
 
   const isStale = result.cacheState === "stale" || result.cacheState === "cache-only";
   const summary = trendSummary(searchTrend.points);
@@ -139,6 +144,8 @@ export default async function KeywordPage({ params }: Props) {
           </p>
         </section>
       )}
+
+      <AnalysisCards keyword={decoded} monthlySearchVolume={total} blog={blogInsight} />
 
       {result.related.length ? (
         <RelatedTable items={result.related} />
