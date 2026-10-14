@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { RelatedKeyword } from "@/lib/data";
 import { displayCount } from "@/lib/keyword";
+import FavoriteButton from "@/components/FavoriteButton";
 
 export default function RelatedTable({ items }: { items: RelatedKeyword[] }) {
   const [filter, setFilter] = useState("");
@@ -38,21 +39,16 @@ export default function RelatedTable({ items }: { items: RelatedKeyword[] }) {
 
       <div className="keywordTable" role="table">
         <div className="keywordRow header" role="row">
-          <span>키워드</span><span>PC</span><span>모바일</span><span>월 검색량</span>
+          <span>키워드</span><span>PC</span><span>모바일</span><span>월 검색량</span><span>관심</span>
         </div>
         {rows.map((item) => (
-          <Link
-            className="keywordRow"
-            role="row"
-            href={`/k/${encodeURIComponent(item.keyword)}`}
-            key={item.keyword}
-            prefetch={false}
-          >
-            <strong>{item.keyword}</strong>
+          <div className="keywordRow" role="row" key={item.keyword}>
+            <Link className="relatedKeywordName" href={`/k/${encodeURIComponent(item.keyword)}`} prefetch={false}>{item.keyword}</Link>
             <span>{displayCount(item.pc, item.pcLow)}</span>
             <span>{displayCount(item.mobile, item.mobileLow)}</span>
             <span className="total">{item.total ? item.total.toLocaleString("ko-KR") : "10 미만"}</span>
-          </Link>
+            <FavoriteButton keyword={item.keyword} compact />
+          </div>
         ))}
       </div>
     </section>

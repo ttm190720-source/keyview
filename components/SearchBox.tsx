@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { recordKeywordVisit } from "@/lib/localKeywords";
 
 export default function SearchBox({ initial = "", compact = false }: { initial?: string; compact?: boolean }) {
   const [value, setValue] = useState(initial);
@@ -11,6 +12,7 @@ export default function SearchBox({ initial = "", compact = false }: { initial?:
     event.preventDefault();
     const keyword = value.trim();
     if (!keyword) return;
+    recordKeywordVisit(keyword);
     router.push(`/k/${encodeURIComponent(keyword)}`);
   }
 

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import HeaderNavigation from "@/components/HeaderNavigation";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: { default: "키뷰 - 검색어를 타고 발견하는 키워드", template: "%s | 키뷰" },
   description: "네이버 월간 검색량과 관련 키워드를 검색량 순으로 빠르게 탐색하세요.",
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -15,6 +17,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <div className="shell headerInner">
             <Link href="/" className="brand">키뷰</Link>
             <span className="brandHint">KEYVIEW</span>
+            <HeaderNavigation />
           </div>
         </header>
         <main>{children}</main>

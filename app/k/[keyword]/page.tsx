@@ -5,6 +5,7 @@ import SearchBox from "@/components/SearchBox";
 import RelatedTable from "@/components/RelatedTable";
 import SearchTrendChart from "@/components/SearchTrendChart";
 import AnalysisCards from "@/components/AnalysisCards";
+import KeywordTracker from "@/components/KeywordTracker";
 import { getKeywordResult } from "@/lib/data";
 import { getSearchTrend } from "@/lib/searchTrend";
 import { getBlogInsight } from "@/lib/blogInsight";
@@ -104,6 +105,7 @@ export default async function KeywordPage({ params }: Props) {
           <span className="eyebrow">MONTHLY SEARCH</span>
           <h1>{decoded}</h1>
           <p>월간 예상 검색량</p>
+          <div className="keywordHeroActions"><KeywordTracker keyword={decoded} /></div>
         </div>
         <div className="bigNumber">{total ? total.toLocaleString("ko-KR") : "10 미만"}</div>
       </section>
